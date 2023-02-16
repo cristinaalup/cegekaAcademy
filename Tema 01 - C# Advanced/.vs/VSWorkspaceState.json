@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\02.After",
+    "\\02.After\\PetShelterDemo",
+    "\\02.After\\PetShelterDemo\\PetShelterDemo",
+    "\\02.After\\PetShelterDemo\\PetShelterDemo.DAL",
+    "\\02.After\\PetShelterDemo\\PetShelterDemo.Domain"
+  ],
+  "SelectedNode": "\\02.After\\PetShelterDemo\\PetShelterDemo.Domain\\Fundraiser.cs",
+  "PreviewInSolutionExplorer": false
+}

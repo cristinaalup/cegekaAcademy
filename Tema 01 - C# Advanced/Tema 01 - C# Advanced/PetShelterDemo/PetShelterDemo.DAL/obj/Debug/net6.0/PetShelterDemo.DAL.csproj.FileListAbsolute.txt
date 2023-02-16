@@ -1,0 +1,12 @@
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\bin\Debug\net6.0\PetShelterDemo.DAL.deps.json
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\bin\Debug\net6.0\PetShelterDemo.DAL.dll
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\bin\Debug\net6.0\PetShelterDemo.DAL.pdb
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\obj\Debug\net6.0\PetShelterDemo.DAL.csproj.AssemblyReference.cache
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\obj\Debug\net6.0\PetShelterDemo.DAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\obj\Debug\net6.0\PetShelterDemo.DAL.AssemblyInfoInputs.cache
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\obj\Debug\net6.0\PetShelterDemo.DAL.AssemblyInfo.cs
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\obj\Debug\net6.0\PetShelterDemo.DAL.csproj.CoreCompileInputs.cache
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\obj\Debug\net6.0\PetShelterDemo.DAL.dll
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\obj\Debug\net6.0\refint\PetShelterDemo.DAL.dll
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\obj\Debug\net6.0\PetShelterDemo.DAL.pdb
+D:\cegeka\01.C#Advanced\02.After\PetShelterDemo\PetShelterDemo.DAL\obj\Debug\net6.0\ref\PetShelterDemo.DAL.dll
