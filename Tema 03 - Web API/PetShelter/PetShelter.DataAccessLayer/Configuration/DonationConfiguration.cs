@@ -14,7 +14,7 @@ public class DonationConfiguration : IEntityTypeConfiguration<Donation>
         //Columns mapping and constraints
         builder.Property(p => p.Amount).IsRequired();
         builder.Property(p => p.DonorId).IsRequired();
-        builder.Property(p=>p.FundraiserId).IsRequired();
+        
 
         //Relationships
         builder.HasOne(p => p.Donor).WithMany(p => p.Donations).HasForeignKey(p => p.DonorId)

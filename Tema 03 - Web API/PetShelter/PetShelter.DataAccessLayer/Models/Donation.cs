@@ -11,6 +11,6 @@ public class Donation : IEntity
     public int DonorId { get; set; }
 
     public Person Donor { get; set; }
-    public int FundraiserId { get; set; } // Foreign key
+    public int? FundraiserId { get; set; } // Foreign key
     public Fundraiser Fundraiser { get; set; } // Navigation property
 }

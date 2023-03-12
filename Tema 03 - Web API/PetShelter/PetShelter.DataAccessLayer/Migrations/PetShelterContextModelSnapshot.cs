@@ -51,7 +51,8 @@ namespace PetShelter.DataAccessLayer.Migrations
                     b.Property<int>("DonorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FundraiserId")
+                    b.Property<int?>("FundraiserId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
