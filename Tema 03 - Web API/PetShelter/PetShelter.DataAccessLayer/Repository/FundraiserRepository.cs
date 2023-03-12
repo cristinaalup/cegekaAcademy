@@ -13,16 +13,14 @@ namespace PetShelter.DataAccessLayer.Repository
         {
         }
 
-        public decimal GetCurrentRaisedAmount(int fundraiserId)
+        public decimal CalculateRaisedAmount(int fundraiserId)
         {
-            var fundraiser = _context.Fundraisers.Find(fundraiserId);
-
-            if (fundraiser == null || fundraiser.Donors == null)
+            var fundraiser = _context.Set<Fundraiser>().Find(fundraiserId);
+            if (fundraiser == null)
             {
-                return 0;
+                throw new ArgumentException($"Fundraiser with ID {fundraiserId} not found");
             }
-
-            return fundraiser.Donors.Sum(d => d.Donations.Sum(dd => dd.Amount));
+            return fundraiser.RaisedAmount;
         }
     }
 }
