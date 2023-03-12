@@ -29,16 +29,16 @@ namespace PetShelter.DataAccessLayer.Configuration
 
             
 
-            // Relationship with Person
-            builder.HasMany(f => f.Donors)
-                     .WithMany(p => p.Fundraisers)
-                     .UsingEntity(j => j.ToTable("Donation"));
+            //// Relationship with Person
+            //builder.HasMany(f => f.Donors)
+            //         .WithMany(p => p.Fundraisers)
+            //         .UsingEntity(j => j.ToTable("Donation"));
 
-            // Relationship with Donation
-            builder.HasMany(f => f.Donations)
-                     .WithOne(d => d.Fundraiser)
-                     .HasForeignKey(d => d.FundraiserId)
-                     .IsRequired();
+            //// Relationship with Donation
+            //builder.HasMany(f => f.Donations)
+            //         .WithOne(d => d.Fundraiser)
+            //         .HasForeignKey(d => d.FundraiserId)
+            //         .IsRequired();
 
         }
     }
