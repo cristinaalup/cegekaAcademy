@@ -27,6 +27,8 @@ namespace PetShelter.DataAccessLayer.Configuration
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
+            
+
             // Relationship with Person
             builder.HasMany(f => f.Donors)
                      .WithMany(p => p.Fundraisers)
