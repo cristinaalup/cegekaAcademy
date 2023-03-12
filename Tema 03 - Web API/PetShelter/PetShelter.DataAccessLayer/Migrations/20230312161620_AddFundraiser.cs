@@ -11,10 +11,10 @@ namespace PetShelter.DataAccessLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-    name: "FundraiserId",
-    table: "Persons",
-    type: "int",
-    nullable: true);
+                name: "FundraiserId",
+                table: "Persons",
+                type: "int",
+                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "FundraiserId",
