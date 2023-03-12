@@ -15,5 +15,6 @@ public class Person: IEntity
     public ICollection<Pet> RescuedPets { get; set; }
     public ICollection<Pet> AdoptedPets { get; set; }
     public ICollection<Donation> Donations { get; set; }
-    public virtual ICollection<Fundraiser> Fundraisers { get; set; }
+    public ICollection<Fundraiser> Fundraisers { get;set; }
+    
 }
