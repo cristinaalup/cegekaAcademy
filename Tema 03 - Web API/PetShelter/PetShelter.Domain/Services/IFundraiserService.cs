@@ -8,7 +8,7 @@ namespace PetShelter.Domain.Services
 {
     public interface IFundraiserService
     {
-        Task CreateFundraiserAsync(string name, int goalValue, Person owner, DateTime dueDate);
+        Task CreateFundraiserAsync(string name, decimal goalValue, Person owner, DateTime dueDate);
         Task<Fundraiser> GetFundraiserAsync(int fundraiserId);
         Task<IReadOnlyList<Fundraiser>> GetAllFundraisersAsync();
         Task DonateToFundraiserAsync(int fundraiserId, Person donor, int donationValue);

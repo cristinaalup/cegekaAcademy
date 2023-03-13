@@ -11,10 +11,12 @@ namespace PetShelter.Api.Controllers
     public class FundraisersController : ControllerBase
     {
         private readonly IFundraiserService _fundraiserService;
+        private readonly IPersonService _personService;
 
-        public FundraisersController(IFundraiserService fundraiserService)
+        public FundraisersController(IFundraiserService fundraiserService, IPersonService personService)
         {
             this._fundraiserService = fundraiserService;
+            _personService = personService;
         }
 
         [HttpGet]
@@ -45,15 +47,17 @@ namespace PetShelter.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateFundraiser([FromBody] Fundraiser resource)
+        public async Task<IActionResult> CreateFundraiser(string name, decimal goalValue,
+            Person owner, DateTime dueDate)
         {
             if (!ModelState.IsValid)
             {
                 return this.BadRequest(ModelState);
             }
 
-            var id = await _fundraiserService.CreateFundraiserAsync(resource.Name, resource.Description, resource.DonationTarget, resource.Owner.AsDomainModel(), resource.DueDate);
-            return this.CreatedAtRoute(nameof(GetFundraiser), new { id }, null);
+            await _fundraiserService.CreateFundraiserAsync(name, goalValue, owner.AsDomainModel(), dueDate);
+            return this.Ok();
+            
         }
 
         [HttpPost("{id}/donate")]
@@ -63,15 +67,14 @@ namespace PetShelter.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DonateToFundraiserAsync(int id, Person donor, int donationValue)
         {
-            if (!ModelState.IsValid)
+            var fundraiser = await _fundraiserService.GetFundraiserAsync(id);
+            if (fundraiser == null)
             {
                 return this.BadRequest(ModelState);
             }
-
-            var donorDomainModel = donor.AsDomainModel();
-            await this._fundraiserService.DonateToFundraiserAsync(id, donor, donationValue);
-
-            return Ok();
+            fundraiser.Owner=donor.AsDomainModel();
+            fundraiser.RaisedAmount += donationValue;
+            return this.Ok();
         }
 
         [HttpDelete("{id}")]
@@ -80,12 +83,12 @@ namespace PetShelter.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteFundraiser(int id)
         {
-            var result = await this._fundraiserService.DeleteFundraiserAsync(id);
-            if (!result)
+            var fundraiser = await _fundraiserService.GetFundraiserAsync(id);
+            if (fundraiser == null)
             {
-                return this.NotFound();
+                return this.BadRequest(ModelState);
             }
-
+            await this._fundraiserService.DeleteFundraiserAsync(id);
             return this.Ok();
         }
     }

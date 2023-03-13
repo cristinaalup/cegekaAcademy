@@ -23,7 +23,7 @@ namespace PetShelter.Domain.Services
             _personRepository = personRepository;
         }
 
-        public async Task CreateFundraiserAsync(string name, int GoalValue, Person owner, DateTime dueDate)
+        public async Task CreateFundraiserAsync(string name, decimal GoalValue, Person owner, DateTime dueDate)
         {
             var fundraiser= _fundraiserRepository.GetFundraiserByName(name);
             var ownerRepo = await _personRepository.GetOrAddPersonAsync(owner.FromDomainModel());
@@ -107,5 +107,7 @@ namespace PetShelter.Domain.Services
             await _personRepository.Delete(owner);
             await _fundraiserRepository.Delete(fundraiser);
         }
+
+        
     }
 }
