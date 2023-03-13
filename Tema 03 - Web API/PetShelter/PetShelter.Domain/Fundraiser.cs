@@ -6,12 +6,18 @@ using System.Threading.Tasks;
 
 namespace PetShelter.Domain
 {
-    public class Fundraiser: INamedEntity
+    public class Fundraiser:FundraiserInfo,INamedEntity
     {
         public string Name { get; set; }
-        public string Description { get; set; }
-        public int DonationTarget { get; set; }
-        public int TotalDonations { get; set; }
-        public List<Person> Donors { get; set; }
+        public decimal GoalValue { get; set; }
+        public Person Owner { get; set; }
+        public DateTime DueDate { get; set; }
+
+        public Fundraiser(string name,decimal goalValue,Person owner, DateTime dueDate) {
+            Name= name;
+            GoalValue= goalValue;
+            Owner= owner;
+            DueDate=dueDate;
+        }
     }
 }
