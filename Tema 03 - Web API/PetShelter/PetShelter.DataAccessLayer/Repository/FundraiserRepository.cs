@@ -22,5 +22,15 @@ namespace PetShelter.DataAccessLayer.Repository
             }
             return fundraiser.RaisedAmount;
         }
+
+        public Fundraiser GetFundraiserByName(string name)
+        {
+            var fundraiser = _context.Set<Fundraiser>().Find(name);
+            if (fundraiser == null)
+            {
+                throw new ArgumentException($"Fundraiser with ID {name} not found");
+            }
+            return fundraiser;
+        }
     }
 }

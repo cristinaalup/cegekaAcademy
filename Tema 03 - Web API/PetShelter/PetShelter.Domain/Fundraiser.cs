@@ -9,13 +9,13 @@ namespace PetShelter.Domain
     public class Fundraiser:FundraiserInfo,INamedEntity
     {
         public string Name { get; set; }
-        public decimal GoalValue { get; set; }
+        public decimal DonationTarget { get; set; }
         public Person Owner { get; set; }
         public DateTime DueDate { get; set; }
 
         public Fundraiser(string name,decimal goalValue,Person owner, DateTime dueDate) {
             Name= name;
-            GoalValue= goalValue;
+            DonationTarget = goalValue;
             Owner= owner;
             DueDate=dueDate;
         }

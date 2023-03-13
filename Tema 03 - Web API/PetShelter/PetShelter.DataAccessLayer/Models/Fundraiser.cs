@@ -1,6 +1,4 @@
-﻿
-
-namespace PetShelter.DataAccessLayer.Models
+﻿namespace PetShelter.DataAccessLayer.Models
 {
     public class Fundraiser : IEntity
     {
@@ -8,8 +6,11 @@ namespace PetShelter.DataAccessLayer.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal DonationTarget { get; set; }
+        public Person Owner { get; set; }
         public List<Person> Donors { get; set; }
         public ICollection<Donation> Donations { get; set; }
+        public FundraiserStatus Status { get; set; }
+        public DateTime CreationTime { get; set; }
 
         public decimal RaisedAmount
         {
@@ -24,7 +25,7 @@ namespace PetShelter.DataAccessLayer.Models
             }
         }
 
-        
+        public DateTime DueDate { get; set; }
     }
 
 }
