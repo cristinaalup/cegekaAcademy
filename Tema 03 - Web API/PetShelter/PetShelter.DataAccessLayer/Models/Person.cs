@@ -11,7 +11,8 @@ public class Person: IEntity
     public DateTime? DateOfBirth { get; set; }
 
     public string IdNumber { get; set; }
-    public int? FundraiserId { get; set; }
+    
+    public Fundraiser Fundraiser { get; set; }
     public ICollection<Pet> RescuedPets { get; set; }
     public ICollection<Pet> AdoptedPets { get; set; }
     public ICollection<Donation> Donations { get; set; }

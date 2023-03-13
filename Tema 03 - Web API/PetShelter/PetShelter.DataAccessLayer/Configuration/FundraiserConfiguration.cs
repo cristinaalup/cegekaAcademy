@@ -44,7 +44,8 @@ namespace PetShelter.DataAccessLayer.Configuration
             //         .HasForeignKey(d => d.FundraiserId)
             //         .IsRequired();
 
-            builder.HasOne(f => f.Owner).WithMany(p => p.Fundraisers).HasForeignKey(f=>f.OwnerIdNumber);
+
+            builder.HasOne(f => f.Owner).WithMany(p => p.Fundraisers).HasForeignKey(f=>f.OwnerId);
 
 
         }
