@@ -3,12 +3,8 @@ using PetShelter.Domain.Exceptions;
 using PetShelter.Domain.Extensions.DataAccess;
 using PetShelter.Domain.Extensions.DomainModel;
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PetShelter.Domain.Services
 {
