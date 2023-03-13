@@ -5,6 +5,7 @@ using PetShelter.Domain.Extensions.DataAccess;
 using PetShelter.Domain.Extensions.DomainModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,19 +48,17 @@ namespace PetShelter.Domain.Services
                 throw new ArgumentException();
             }
             fundraiser.Owner = await _personRepository.GetOrAddPersonAsync(fundraiser.Owner);
-            return await fundraiser.AsDomain();
+            if (fundraiser.Owner == null)
+            {
+                throw new ArgumentException();
+            }
+            return fundraiser.ToDomainModel();
         }
 
         public async Task<IReadOnlyList<Fundraiser>> GetAllFundraisersAsync()
         {
-            var fundraisers = _fundraisers.Select(f => new Fundraiser
-            {
-                Id = f.Id,
-                Name = f.Name,
-                Status = f.Status
-            }).ToList();
-
-            return await Task.FromResult<IReadOnlyList<Fundraiser>>(fundraisers);
+            var fundraisers = await _fundraiserRepository.GetAll();
+            return fundraisers.Select(f=>f.ToDomainModel()).ToImmutableArray();
         }
 
         public async Task DonateToFundraiserAsync(int fundraiserId, Person donor, int donationValue)
@@ -81,9 +80,9 @@ namespace PetShelter.Domain.Services
                 throw new ArgumentOutOfRangeException(nameof(donationValue), "Donation value must be greater than 0.");
             }
 
-            fundraiser.TotalDonations += donationValue;
+            fundraiser.RaisedAmount += donationValue;
 
-            if (fundraiser.TotalDonations >= fundraiser.DonationTarget)
+            if (fundraiser.RaisedAmount >= fundraiser.DonationTarget)
             {
                 fundraiser.Status = FundraiserStatus.Closed;
             }
@@ -96,16 +95,17 @@ namespace PetShelter.Domain.Services
 
         public async Task DeleteFundraiserAsync(int fundraiserId)
         {
-            var fundraiser = await GetFundraiserAsync(fundraiserId);
+            var fundraiser = await _fundraiserRepository.GetById(fundraiserId);
 
             if (fundraiser == null)
             {
                 throw new ArgumentException($"Fundraiser with ID {fundraiserId} does not exist.");
             }
 
-            fundraiser.Status = FundraiserStatus.Closed;
-
-            _fundraisers.Remove(fundraiser);
+            fundraiser.Status = (DataAccessLayer.Models.FundraiserStatus)FundraiserStatus.Closed;
+            var owner = await _personRepository.GetOrAddPersonAsync(fundraiser.Owner);
+            await _personRepository.Delete(owner);
+            await _fundraiserRepository.Delete(fundraiser);
         }
     }
 }

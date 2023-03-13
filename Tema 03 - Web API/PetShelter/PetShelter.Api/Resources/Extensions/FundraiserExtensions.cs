@@ -4,7 +4,7 @@
     {
         public static Domain.Fundraiser AsDomainModel(this Fundraiser fundraiser)
         {
-            var owner=fundraiser.Owner;
+            var owner=fundraiser.Owner.AsDomainModel();
             var domainModel=new Domain.Fundraiser(fundraiser.Name,fundraiser.DonationTarget,owner,fundraiser.DueDate);
             domainModel.Status = (Domain.FundraiserStatus)fundraiser.Status;
             domainModel.Id = fundraiser.Id;
