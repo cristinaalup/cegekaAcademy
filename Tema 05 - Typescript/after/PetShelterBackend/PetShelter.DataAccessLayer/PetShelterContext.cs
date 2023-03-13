@@ -14,6 +14,7 @@ public class PetShelterContext : DbContext
     public DbSet<Person> Persons { get; set; }
     public DbSet<Donation> Donations { get; set; }
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new PetConfiguration());
