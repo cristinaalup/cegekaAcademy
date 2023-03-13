@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Moq;
+using PetShelter.BusinessLayer.Constants;
 using PetShelter.BusinessLayer.ExternalServices;
 using PetShelter.BusinessLayer.Models;
 using PetShelter.BusinessLayer.Validators;
@@ -16,6 +17,7 @@ namespace PetShelter.BusinessLayer.Tests
         private readonly Mock<IPersonRepository> _mockPersonRepository;
         private readonly Mock<IPetRepository> _mockPetRepository;
         private readonly Mock<IIdNumberValidator> _mockIdNumberValidator;
+        private readonly Mock<IPetTypeValidator> _mockPetTypeValidator;
 
         private RescuePetRequest _request;
 
@@ -24,6 +26,7 @@ namespace PetShelter.BusinessLayer.Tests
             _mockPersonRepository= new Mock<IPersonRepository>();
             _mockPetRepository= new Mock<IPetRepository>(); 
             _mockIdNumberValidator = new Mock<IIdNumberValidator>();
+            _mockPetTypeValidator = new Mock<IPetTypeValidator>();
 
             _personService = new PersonService(_mockPersonRepository.Object, _mockIdNumberValidator.Object, new PersonValidator());
             _petServiceSut = new PetService(_personService, _mockPetRepository.Object, new RescuePetRequestValidator(), new AdoptPetRequestValidator());
@@ -97,5 +100,24 @@ namespace PetShelter.BusinessLayer.Tests
             //Assert
             _mockPetRepository.Verify(x => x.Add(It.Is<Pet>(p => p.Name == _request.PetName)), Times.Never);
         }
+
+        //[Theory]
+        //[InlineData(PetType.Cat)]
+        //[InlineData(PetType.Dog)]
+        //public async Task GivenTypeIsInvalid_WhenRescuePet_ThenThrowsArgumentException(PetType petType)
+        //{
+        //    // Arrange
+        //    SetupHappyPath();
+
+        //    _mockPetTypeValidator.GetType(petType);
+
+        //    //Act
+        //    var exception = await Assert.ThrowsAsync<ArgumentException>(() => _petServiceSut.RescuePet(_request));
+
+            
+
+        //    _mockPetRepository.Verify(x => x.Add(It.Is<Pet>(p => p.Type.Equals(_request.Type))), Times.Never);
+
+        //}
     }
 }
