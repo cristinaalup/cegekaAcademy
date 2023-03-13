@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PetShelter.Domain.Services
 {
-    public class FundraiserService
+    public class FundraiserService: IFundraiserService
     {
         private readonly IFundraiserRepository _fundraiserRepository;
         private readonly IPersonRepository _personRepository;
