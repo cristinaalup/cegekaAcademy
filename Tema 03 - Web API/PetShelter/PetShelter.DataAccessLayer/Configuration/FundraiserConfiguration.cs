@@ -27,7 +27,11 @@ namespace PetShelter.DataAccessLayer.Configuration
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
-            
+            builder.Property(f=>f.RaisedAmount).HasColumnType("decimal(18,2)").IsRequired();
+
+            builder.Property(f => f.CreationTime).IsRequired();
+            builder.Property(f=>f.DueDate).IsRequired();
+
 
             //// Relationship with Person
             //builder.HasMany(f => f.Donors)
@@ -39,6 +43,9 @@ namespace PetShelter.DataAccessLayer.Configuration
             //         .WithOne(d => d.Fundraiser)
             //         .HasForeignKey(d => d.FundraiserId)
             //         .IsRequired();
+
+            builder.HasOne(f => f.Owner).WithMany(p => p.Fundraisers).HasForeignKey(f=>f.OwnerIdNumber);
+
 
         }
     }
