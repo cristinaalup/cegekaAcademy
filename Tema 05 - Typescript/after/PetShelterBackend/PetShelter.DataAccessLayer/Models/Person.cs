@@ -1,8 +1,8 @@
 ﻿namespace PetShelter.DataAccessLayer.Models;
 
-public class Person: Entity
+public class Person: IEntity
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
 
     /// <summary>
@@ -11,8 +11,11 @@ public class Person: Entity
     public DateTime? DateOfBirth { get; set; }
 
     public string IdNumber { get; set; }
-
+    
+    public Fundraiser Fundraiser { get; set; }
     public ICollection<Pet> RescuedPets { get; set; }
     public ICollection<Pet> AdoptedPets { get; set; }
     public ICollection<Donation> Donations { get; set; }
+    public ICollection<Fundraiser> Fundraisers { get;set; }
+    
 }

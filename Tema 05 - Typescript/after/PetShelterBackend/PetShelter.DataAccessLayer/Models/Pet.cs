@@ -1,11 +1,11 @@
 ﻿namespace PetShelter.DataAccessLayer.Models;
 
-public class Pet: Entity
+public class Pet: IEntity
 {
     /// <summary>
     ///     Identifier
     /// </summary>
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     public string Name { get; set; }
 
@@ -32,12 +32,12 @@ public class Pet: Entity
     /// <summary>
     ///     FK to a person
     /// </summary>
-    public Guid? RescuerId { get; set; }
+    public int? RescuerId { get; set; }
 
     /// <summary>
     ///     FK to a person
     /// </summary>
-    public Guid? AdopterId { get; set; }
+    public int? AdopterId { get; set; }
 
     public Person? Adopter { get; set; }
     public Person Rescuer { get; set; }

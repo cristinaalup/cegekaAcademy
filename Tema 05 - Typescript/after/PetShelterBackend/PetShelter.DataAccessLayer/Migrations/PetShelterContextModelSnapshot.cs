@@ -36,11 +36,60 @@ namespace PetShelter.DataAccessLayer.Migrations
                     b.Property<int>("DonorId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("FundraiserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DonorId");
 
+                    b.HasIndex("FundraiserId");
+
                     b.ToTable("Donations");
+                });
+
+            modelBuilder.Entity("PetShelter.DataAccessLayer.Models.Fundraiser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal>("DonationTarget")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RaisedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Fundraisers");
                 });
 
             modelBuilder.Entity("PetShelter.DataAccessLayer.Models.Person", b =>
@@ -54,6 +103,9 @@ namespace PetShelter.DataAccessLayer.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("FundraiserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("IdNumber")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -65,6 +117,8 @@ namespace PetShelter.DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FundraiserId");
 
                     b.ToTable("Persons");
                 });
@@ -136,7 +190,35 @@ namespace PetShelter.DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PetShelter.DataAccessLayer.Models.Fundraiser", "Fundraiser")
+                        .WithMany("Donations")
+                        .HasForeignKey("FundraiserId");
+
                     b.Navigation("Donor");
+
+                    b.Navigation("Fundraiser");
+                });
+
+            modelBuilder.Entity("PetShelter.DataAccessLayer.Models.Fundraiser", b =>
+                {
+                    b.HasOne("PetShelter.DataAccessLayer.Models.Person", "Owner")
+                        .WithMany("Fundraisers")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("PetShelter.DataAccessLayer.Models.Person", b =>
+                {
+                    b.HasOne("PetShelter.DataAccessLayer.Models.Fundraiser", "Fundraiser")
+                        .WithMany("Donors")
+                        .HasForeignKey("FundraiserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fundraiser");
                 });
 
             modelBuilder.Entity("PetShelter.DataAccessLayer.Models.Pet", b =>
@@ -154,11 +236,20 @@ namespace PetShelter.DataAccessLayer.Migrations
                     b.Navigation("Rescuer");
                 });
 
+            modelBuilder.Entity("PetShelter.DataAccessLayer.Models.Fundraiser", b =>
+                {
+                    b.Navigation("Donations");
+
+                    b.Navigation("Donors");
+                });
+
             modelBuilder.Entity("PetShelter.DataAccessLayer.Models.Person", b =>
                 {
                     b.Navigation("AdoptedPets");
 
                     b.Navigation("Donations");
+
+                    b.Navigation("Fundraisers");
 
                     b.Navigation("RescuedPets");
                 });

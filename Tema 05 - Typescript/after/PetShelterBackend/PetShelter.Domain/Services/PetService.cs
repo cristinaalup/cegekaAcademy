@@ -3,12 +3,8 @@ using PetShelter.Domain.Exceptions;
 using PetShelter.Domain.Extensions.DataAccess;
 using PetShelter.Domain.Extensions.DomainModel;
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PetShelter.Domain.Services
 {
@@ -23,7 +19,7 @@ namespace PetShelter.Domain.Services
             _personRepository = personRepository;
         }
 
-        public async Task AdoptPetAsync(Person adopter, Guid petId)
+        public async Task AdoptPetAsync(Person adopter, int petId)
         {
             var person = await _personRepository.GetOrAddPersonAsync(adopter.FromDomainModel());
             var adoptedPet = await _petRepository.GetById(petId);
@@ -40,7 +36,7 @@ namespace PetShelter.Domain.Services
                 .ToImmutableArray();
         }
 
-        public async Task<Pet> GetPet(Guid petId)
+        public async Task<Pet> GetPet(int petId)
         {
             var pet = await _petRepository.GetById(petId);
             if (pet == null)
@@ -56,7 +52,7 @@ namespace PetShelter.Domain.Services
             return pet.ToDomainModel();
         }
 
-        public async Task<Guid> RescuePetAsync(Person rescuer, Pet pet)
+        public async Task<int> RescuePetAsync(Person rescuer, Pet pet)
         {
             var person = await _personRepository.GetOrAddPersonAsync(rescuer.FromDomainModel());
             var rescuedPet = new DataAccessLayer.Models.Pet
@@ -76,7 +72,7 @@ namespace PetShelter.Domain.Services
             return rescuedPet.Id;
         }
 
-        public async Task UpdatePetAsync(Guid petId, PetInfo petInfo)
+        public async Task UpdatePetAsync(int petId, PetInfo petInfo)
         {
             var savedPet = await _petRepository.GetById(petId);
             if (savedPet == null)

@@ -1,30 +1,41 @@
-﻿using PetShelter.DataAccessLayer.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PetShelter.DataAccessLayer.Models;
 
 namespace PetShelter.DataAccessLayer.Repository;
 
-public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
+public abstract class BaseRepository<T> : IBaseRepository<T> where T : class, IEntity
 { 
-    protected readonly Dictionary<Guid, T> _db = new();
-
-    public Task Add(T entity)
+    protected readonly PetShelterContext _context;
+    public BaseRepository(PetShelterContext context)
     {
-        _db.Add(entity.Id, entity);
-        return Task.CompletedTask;
+        _context = context;
     }
 
-    public Task Update(T entity)
+    public async Task Add(T entity)
     {
-        _db[entity.Id] = entity;
-        return Task.CompletedTask;
+        await _context.AddAsync(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<List<T>> GetAll()
+    public async Task Update(T entity)
     {
-        return Task.FromResult(_db.Values.ToList());
+        _context.Update(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<T?> GetById(Guid id)
+    public async Task<List<T>> GetAll()
     {
-        return Task.FromResult(_db[id]);
+        return await _context.Set<T>().ToListAsync();
+    }
+
+    public async Task<T?> GetById(int id)
+    {
+        return await _context.Set<T>().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    async Task IBaseRepository<T>.Delete(T entity)
+    {
+        _context.Remove(entity);
+        await _context.SaveChangesAsync();
     }
 }

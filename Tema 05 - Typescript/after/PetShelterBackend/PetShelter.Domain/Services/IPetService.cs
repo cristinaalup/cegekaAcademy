@@ -8,13 +8,13 @@ namespace PetShelter.Domain.Services;
 
 public interface IPetService
 {
-    Task UpdatePetAsync(Guid petId, PetInfo petInfo);
+    Task UpdatePetAsync(int petId, PetInfo petInfo);
 
-    Task<Pet> GetPet(Guid petId);
+    Task<Pet> GetPet(int petId);
 
     Task<IReadOnlyCollection<Pet>> GetAllPets();
     
-    Task<Guid> RescuePetAsync(Person rescuer, Pet pet);
+    Task<int> RescuePetAsync(Person rescuer, Pet pet);
 
-    Task AdoptPetAsync(Person adopter, Guid petId);
+    Task AdoptPetAsync(Person adopter, int petId);
 }

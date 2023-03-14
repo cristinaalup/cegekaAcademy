@@ -17,7 +17,7 @@ namespace PetShelter.Domain.Extensions.DomainModel
             }
 
             var petType = Enum.Parse<PetType>(pet.Type);
-            var domainModel = new Pet(petType);
+            var domainModel = new Pet(petType, id: pet.Id);
             domainModel.Name = pet.Name;
             domainModel.BirthDate= pet.Birthdate;
             domainModel.Description = pet.Description;

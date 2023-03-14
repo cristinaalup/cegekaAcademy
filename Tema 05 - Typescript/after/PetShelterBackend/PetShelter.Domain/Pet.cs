@@ -2,7 +2,7 @@
 
 public class Pet : PetInfo, INamedEntity
 {
-    public Guid Id { get; }
+    public int Id { get; }
 
     public PetType Type { get; }
 
@@ -10,9 +10,9 @@ public class Pet : PetInfo, INamedEntity
 
     public Person Adopter { get; set; }
 
-    public Pet(PetType type)
+    public Pet(PetType type, int id = 0)
     {
         Type = type;
-        Id = Guid.NewGuid();
+        Id = id;
     }
 }

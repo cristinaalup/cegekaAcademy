@@ -5,8 +5,13 @@ namespace PetShelter.DataAccessLayer.Repository;
 
 public class PersonRepository : BaseRepository<Person>, IPersonRepository
 {
+
+    public PersonRepository(PetShelterContext context) : base(context)
+    {
+    }
+
     public async Task<Person?> GetPersonByIdNumber(string idNumber)
     {
-        return (await GetAll()).SingleOrDefault(p => p.IdNumber == idNumber);
+        return await _context.Persons.SingleOrDefaultAsync(p => p.IdNumber == idNumber);
     }
 }

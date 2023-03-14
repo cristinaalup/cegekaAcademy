@@ -9,62 +9,61 @@ using PetShelter.DataAccessLayer;
 using PetShelter.DataAccessLayer.Repository;
 using PetShelter.Domain.Services;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddCors(options =>
+internal class Program
 {
-    options.AddDefaultPolicy(
-        policy =>
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Add services to the container.
+
+        builder.Services.AddDbContext<PetShelterContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("PetShelterConnection"),
+                providerOptions =>
+                {
+                    providerOptions.MigrationsAssembly("PetShelter.DataAccessLayer");
+                    providerOptions.EnableRetryOnFailure();
+                }));
+        builder.Services.AddScoped<IPetService, PetService>();
+        builder.Services.AddScoped<IPetRepository, PetRepository>();
+
+
+        builder.Services.AddScoped<IPersonService, PersonService>();
+        builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+
+        builder.Services.AddScoped<IFundraiserService, FundraiserService>();
+        builder.Services.AddScoped<IFundraiserRepository, FundraiserRepository>();
+
+
+        builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+        builder.Services.AddFluentValidationAutoValidation(fv =>
         {
-            policy.AllowAnyHeader();
-            policy.AllowAnyOrigin();
-            policy.AllowAnyMethod();
+            fv.DisableDataAnnotationsValidation = true;
+        }).AddFluentValidationClientsideAdapters();
+
+        builder.Services.AddControllers().AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.Converters.Add(new StringEnumConverter());
         });
-});
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<PetShelterContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PetShelterConnection"),
-        providerOptions =>
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
         {
-            providerOptions.MigrationsAssembly("PetShelter.DataAccessLayer");
-            providerOptions.EnableRetryOnFailure();
-        }));
-builder.Services.AddSingleton<IPetService, PetService>();
-builder.Services.AddSingleton<IPetRepository, PetRepository>();
-builder.Services.AddSingleton<IPersonRepository, PersonRepository>();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
 
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-builder.Services.AddFluentValidationAutoValidation(fv =>
-{
-    fv.DisableDataAnnotationsValidation = true;
-}).AddFluentValidationClientsideAdapters();
+        app.UseHttpsRedirection();
 
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
-{
-    options.SerializerSettings.Converters.Add(new StringEnumConverter());
-}); 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+        app.UseAuthorization();
 
-var app = builder.Build();
+        app.MapControllers();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+        app.Run();
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.UseCors();
-
-app.MapControllers();
-
-
-
-app.Run();

@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 using PetShelter.Api.Resources;
 using PetShelter.Api.Resources.Extensions;
+using PetShelter.Domain;
 using System.Collections.Immutable;
 using PetShelter.Domain.Services;
+using FluentValidation;
 
 namespace PetShelter.Api.Controllers
 {
@@ -15,22 +18,22 @@ namespace PetShelter.Api.Controllers
 
         public PetsController(IPetService petService)
         {
-            _petService = petService;
+            this._petService = petService;
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IdentifiablePet>> Get(Guid id)
+        public async Task<ActionResult<IdentifiablePet>> Get(int id)
         {
-            var pet = await _petService.GetPet(id);
+            var pet = await this._petService.GetPet(id);
             if (pet is null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return Ok(pet.AsResource());
+            return this.Ok(pet.AsResource());
         }
 
         [HttpGet]
@@ -38,8 +41,17 @@ namespace PetShelter.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IReadOnlyList<IdentifiablePet>>> GetPets()
         {
-            var data = await _petService.GetAllPets();
-            return Ok(data.Select(p => p.AsResource()).ToImmutableArray());
+            var data = await this._petService.GetAllPets();
+            return this.Ok(data.Select(p => p.AsResource()).ToImmutableArray());
+        }
+
+        [HttpOptions]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Options()
+        {
+            this.Response.Headers.Add("Allow", "GET, POST, PUT, DELETE, OPTIONS");
+            return this.Ok();
         }
 
         [HttpPost]
@@ -48,8 +60,8 @@ namespace PetShelter.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> RescuePet([FromBody] RescuedPet pet)
         {
-            await _petService.RescuePetAsync(pet.Rescuer.AsDomainModel(), pet.AsDomainModel());
-            return Ok();
+            var id = await _petService.RescuePetAsync(pet.Rescuer.AsDomainModel(), pet.AsDomainModel());
+            return CreatedAtRoute(nameof(RescuePet), id);
         }
 
         [HttpPut("{id}")]
@@ -58,11 +70,11 @@ namespace PetShelter.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> UpdatePet(Guid id, [FromBody] Pet pet)
+        public async Task<ActionResult> UpdatePet(int id, [FromBody] Resources.Pet pet)
         {
-            await _petService.UpdatePetAsync(id, pet.AsPetInfo());
+            await this._petService.UpdatePetAsync(id, pet.AsPetInfo());
 
-            return NoContent();
+            return this.NoContent();
         }
 
 
@@ -70,7 +82,7 @@ namespace PetShelter.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> AdoptPet(Guid id, [FromBody] Person adopter)
+        public async Task<IActionResult> AdoptPet(int id, [FromBody] Resources.Person adopter)
         {
             await _petService.AdoptPetAsync(adopter.AsDomainModel(), id);
             return NoContent();

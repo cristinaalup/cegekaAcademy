@@ -1,8 +1,8 @@
 ﻿namespace PetShelter.DataAccessLayer.Models;
 
-public class Donation: Entity
+public class Donation : IEntity
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public decimal Amount { get; set; }
 
     /// <summary>
@@ -11,4 +11,6 @@ public class Donation: Entity
     public int DonorId { get; set; }
 
     public Person Donor { get; set; }
+    public int? FundraiserId { get; set; } // Foreign key
+    public Fundraiser Fundraiser { get; set; } // Navigation property
 }

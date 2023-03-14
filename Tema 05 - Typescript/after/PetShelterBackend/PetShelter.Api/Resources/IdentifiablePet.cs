@@ -2,7 +2,7 @@
 
 public class IdentifiablePet:Pet
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     public Person Rescuer { get; set; }
 
