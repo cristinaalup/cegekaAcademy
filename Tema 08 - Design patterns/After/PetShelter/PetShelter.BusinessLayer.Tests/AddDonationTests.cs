@@ -13,7 +13,10 @@ public class AddDonationTests
     public async Task GivenValidRequest_WhenAddDonation_DonationIsAdded()
     {
         var mockDonationRepository = new Mock<IDonationRepository>();
-        var donationServiceSut = new DonationService(mockDonationRepository.Object, new AddDonationRequestValidator());
+        var donationServiceSut = new DonationServiceBuilder()
+                                    .WithDonationRepository(mockDonationRepository.Object)
+                                    .WithDonationValidator(new AddDonationRequestValidator())
+                                    .Build();
 
         var request = new AddDonationRequest
         {
@@ -28,7 +31,10 @@ public class AddDonationTests
     public async Task GivenRequestWithMissingAmount_WhenAddDonation_DonationIsNotAdded()
     {
         var mockDonationRepository = new Mock<IDonationRepository>();
-        var donationServiceSut = new DonationService(mockDonationRepository.Object, new AddDonationRequestValidator());
+        var donationServiceSut  = new DonationServiceBuilder()
+                                    .WithDonationRepository(mockDonationRepository.Object)
+                                    .WithDonationValidator(new AddDonationRequestValidator())
+                                    .Build();
 
         var request = new AddDonationRequest();
         await Assert.ThrowsAsync<ArgumentException>(() => donationServiceSut.AddDonation(request));
