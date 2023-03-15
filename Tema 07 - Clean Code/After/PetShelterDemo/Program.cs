@@ -1,6 +1,5 @@
 ﻿using PetShelterDemo.DAL;
 using PetShelterDemo.Domain;
-using System.Collections.Generic;
 
 var shelter = new PetShelter();
 
