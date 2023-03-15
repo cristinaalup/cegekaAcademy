@@ -1,4 +1,5 @@
 ﻿using PetShelterDemo.DAL;
+using PetShelterDemo.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

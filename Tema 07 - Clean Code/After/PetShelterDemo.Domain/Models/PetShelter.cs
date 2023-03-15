@@ -1,4 +1,6 @@
 ﻿using PetShelterDemo.DAL;
+using PetShelterDemo.Domain.Interfaces;
+using PetShelterDemo.Domain.Registries;
 
 namespace PetShelterDemo.Domain.Models;
 

@@ -1,4 +1,6 @@
-﻿namespace PetShelterDemo.Domain.Models
+﻿using PetShelterDemo.Domain.Interfaces;
+
+namespace PetShelterDemo.Domain.Models
 {
     public class Pet : INamedEntity
     {
