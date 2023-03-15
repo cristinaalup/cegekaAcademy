@@ -80,7 +80,7 @@ void DonateToFR()
     var sum= ReadInteger();
     Console.WriteLine("What fundraiser would you like to donate to?:");
     var title= ReadString();
-    var fr = shelter.GetFRByName(title);
+    var fr = shelter.GetFundraiserByName(title);
     var person = new Person(name, id);
     fr.AddDonation(sum,person );
 }
