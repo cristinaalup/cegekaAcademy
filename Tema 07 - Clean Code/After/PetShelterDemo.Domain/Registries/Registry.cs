@@ -1,6 +1,7 @@
 ﻿using PetShelterDemo.DAL;
+using PetShelterDemo.Domain.Interfaces;
 
-namespace PetShelterDemo.Domain
+namespace PetShelterDemo.Domain.Registries
 {
     internal sealed class Registry<T> : IRegistry<T> where T : INamedEntity
     {
@@ -20,7 +21,7 @@ namespace PetShelterDemo.Domain
             return await database.GetAll<T>();
         }
 
-        
+
 
         public async Task<T> GetByName(string name) // implement after LINQ
         {

@@ -1,6 +1,6 @@
-﻿namespace PetShelterDemo.Domain
+﻿namespace PetShelterDemo.Domain.Interfaces
 {
-    public interface IRegistry<T> where T: INamedEntity
+    public interface IRegistry<T> where T : INamedEntity
     {
         Task Register(T instance);
         Task<IReadOnlyList<T>> GetAll();

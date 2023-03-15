@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetShelterDemo.Domain
+namespace PetShelterDemo.Domain.Models
 {
-    public class Fundraiser:INamedEntity, IAddDonation
+    public class Fundraiser : INamedEntity, IAddDonation
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -22,7 +22,7 @@ namespace PetShelterDemo.Domain
             Description = description;
             DonationTarget = donationTarget;
             TotalDonations = 0;
-            Donors=new List<Person>() { };
+            Donors = new List<Person>() { };
         }
 
         public void AddDonation(int donationValue, Person person)

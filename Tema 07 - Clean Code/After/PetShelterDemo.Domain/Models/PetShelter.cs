@@ -1,6 +1,6 @@
 ﻿using PetShelterDemo.DAL;
 
-namespace PetShelterDemo.Domain;
+namespace PetShelterDemo.Domain.Models;
 
 public class PetShelter
 {
@@ -36,7 +36,7 @@ public class PetShelter
 
     public IReadOnlyList<Fundraiser> GetAllFundraisers()
     {
-        return fundraiserRegistry.GetAll().Result; 
+        return fundraiserRegistry.GetAll().Result;
     }
 
     public IReadOnlyList<Pet> GetAllPets()
