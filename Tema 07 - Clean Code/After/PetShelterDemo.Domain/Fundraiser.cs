@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 
 namespace PetShelterDemo.Domain
 {
-    public class Fundraiser:INamedEntity
+    public class Fundraiser:INamedEntity, IAddDonation
     {
         public string Name { get; set; }
         public string Description { get; set; }
         public int DonationTarget { get; set; }
         public int TotalDonations { get; set; }
         public List<Person> Donors { get; set; }
-      //  public IRegistry<Person> donorRegistry;
 
         public Fundraiser(string title, string description, int donationTarget)
         {
@@ -24,16 +23,12 @@ namespace PetShelterDemo.Domain
             DonationTarget = donationTarget;
             TotalDonations = 0;
             Donors=new List<Person>() { };
-          //  donorRegistry = new Registry<Person>(new Database());
         }
 
-        public void AddDonation(int donation, Person person)
+        public void AddDonation(int donationValue, Person person)
         {
-            // Donations.Add(donation);
-            TotalDonations += donation;
-           // donorRegistry.Register(person);
+            TotalDonations += donationValue;
             Donors.Add(person);
         }
-
     }
 }
