@@ -1,16 +1,4 @@
-﻿//// See https://aka.ms/new-console-template for more information
-//// Syntactic sugar: Starting with .Net 6, Program.cs only contains the code that is in the Main method.
-//// This means we no longer need to write the following code, but the compiler still creates the Program class with the Main method:
-//// namespace PetShelterDemo
-//// {
-////    internal class Program
-////    {
-////        static void Main(string[] args)
-////        { actual code here }
-////    }
-//// }
-
-using PetShelterDemo.DAL;
+﻿using PetShelterDemo.DAL;
 using PetShelterDemo.Domain;
 using System.Collections.Generic;
 
@@ -33,9 +21,9 @@ try
                 { "See our residents", SeePets },
                 { "Break our database connection", BreakDatabaseConnection },
                 { "Add fundraiser", AddFundraiser },
-                { "See our fundraisers", SeeFR },
-                { "Donate to our fundraisers", DonateToFR },
-                { "See our fundraisers' donations", SeeFRDonations },
+                { "See our fundraisers", GetFundraiser },
+                { "Donate to our fundraisers", DonateToFundraiser },
+                { "See our fundraisers' donations", GetFundraisersDonations },
                 { "Leave:(", Leave }
             }
         ) ;
@@ -49,43 +37,80 @@ catch (Exception e)
 
 void AddFundraiser()
 {
-    //var name = ReadString("Title?");
-    //var id = ReadString("Id?");
-    //var description = ReadString("Description?");
-    //var target = ReadString("Target?");
-    //var fundraiser=new Fundraiser(title, id, description, name);
-    //// var total = ReadString("Description?");
-    //// var Donors = ReadString("Description?");
+    Fundraiser fundraiser=WriteFundraiser();
+    shelter.RegisterFundraiser(fundraiser);
+}
 
+Fundraiser WriteFundraiser()
+{
     Console.WriteLine("Let's create a new fundraiser!");
+
     Console.Write("Title: ");
     string title = Console.ReadLine();
+
     Console.Write("Description: ");
     string description = Console.ReadLine();
-    Console.Write("Donation target: ");
-    int donationTarget = int.Parse(Console.ReadLine());
 
-    var fundraiser = new Fundraiser(title, description, donationTarget);
-    shelter.RegisterFundraiser(fundraiser);
+    int donationTarget = ValidateInteger();
 
+    Fundraiser fundraiser=new Fundraiser(title, description, donationTarget);
+    return fundraiser;
 }
 
-void DonateToFR()
+int ValidateInteger()
 {
-    Console.WriteLine("Your name:");
-    var name = ReadString();
-    Console.WriteLine("Your id:");
-    var id = ReadString();
-    Console.WriteLine("Amount of money you want to donate:");
-    var sum= ReadInteger();
-    Console.WriteLine("What fundraiser would you like to donate to?:");
-    var title= ReadString();
-    var fr = shelter.GetFundraiserByName(title);
-    var person = new Person(name, id);
-    fr.AddDonation(sum,person );
+    int donationTarget;
+    while (true)
+    {
+        Console.Write("Donation target: ");
+        if (int.TryParse(Console.ReadLine(), out donationTarget))
+        {
+            break;
+        }
+        Console.WriteLine("Invalid input. Please enter a valid integer.");
+    }
+    return donationTarget;
 }
 
-void SeeFR()
+void DonateToFundraiser()
+{
+    Person donor = WritePerson();
+
+    Console.Write("What fundraiser would you like to donate to?: ");
+    string title = Console.ReadLine();
+
+    Fundraiser fundraiser = shelter.GetFundraiserByName(title);
+    CheckIfFundraiserExist(fundraiser);
+
+    int sum = ValidateInteger();
+
+    fundraiser.AddDonation(sum, donor);
+}
+
+Person WritePerson()
+{
+    Console.WriteLine("Please provide the following information:");
+
+    Console.Write("Your name: ");
+    string name = Console.ReadLine();
+
+    Console.Write("Your ID: ");
+    string id = Console.ReadLine();
+
+    return new Person(name, id);
+}
+
+void CheckIfFundraiserExist(Fundraiser fundraiser)
+{
+    if (fundraiser == null)
+    {
+        Console.WriteLine("No fundraiser found with that title.");
+        return;
+    }
+
+}
+
+void GetFundraiser()
 {
     
     Console.WriteLine("Fundraisers:");
@@ -97,10 +122,9 @@ void SeeFR()
 
 }
 
-void SeeFRDonations()
+void GetFundraisersDonations()
 {
     Console.WriteLine("what fundraiser do you want to see the donations?");
-  //  var title = ReadString();
     var fundraisers = shelter.GetAllFundraisers();
     
     Console.WriteLine("donations:");
@@ -124,26 +148,25 @@ void SeeFRDonations()
 }
 void RegisterPet()
 {
+    Pet pet = WritePet();
+    shelter.RegisterPet(pet);
+}
+
+Pet WritePet()
+{
     var name = ReadString("Name?");
     var description = ReadString("Description?");
 
-    var pet = new Pet(name, description);
-
-    shelter.RegisterPet(pet);
+    return new Pet(name, description);
 }
 
 void Donate()
 {
-    Console.WriteLine("What's your name? (So we can credit you.)");
-    var name = ReadString();
-
-    Console.WriteLine("What's your personal Id? (No, I don't know what GDPR is. Why do you ask?)");
-    var id = ReadString();
-    var person = new Person(name, id);
+    Person donor = WritePerson();
 
     Console.WriteLine("How much would you like to donate? (RON)");
     var amountInRon = ReadInteger();
-    shelter.Donate(person, amountInRon);
+    shelter.Donate(donor, amountInRon);
 }
 
 void SeeDonations()
