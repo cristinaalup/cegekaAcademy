@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PetShelter.Domain\PetShelter.Domain.csproj" />
+    <ProjectReference Include="..\PetShelter.BusinessLayer\PetShelter.BusinessLayer.csproj" />
   </ItemGroup>
 
 </Project>

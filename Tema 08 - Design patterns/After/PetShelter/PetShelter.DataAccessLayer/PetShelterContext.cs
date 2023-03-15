@@ -6,10 +6,10 @@ namespace PetShelter.DataAccessLayer;
 
 public class PetShelterContext : DbContext
 {
-    public PetShelterContext(DbContextOptions options):base(options)
+    public PetShelterContext(DbContextOptions options) : base(options)
     {
-
     }
+
     public DbSet<Pet> Pets { get; set; }
     public DbSet<Person> Persons { get; set; }
     public DbSet<Donation> Donations { get; set; }

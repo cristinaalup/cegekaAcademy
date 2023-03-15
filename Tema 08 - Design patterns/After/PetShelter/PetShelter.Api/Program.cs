@@ -1,13 +1,13 @@
-using FluentValidation.AspNetCore;
 using FluentValidation;
-
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-
-using Newtonsoft.Json.Converters;
-
+using PetShelter.BusinessLayer;
+using PetShelter.BusinessLayer.ExternalServices;
+using PetShelter.BusinessLayer.Validators;
 using PetShelter.DataAccessLayer;
 using PetShelter.DataAccessLayer.Repository;
-using PetShelter.Domain.Services;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +20,16 @@ builder.Services.AddDbContext<PetShelterContext>(options =>
             providerOptions.MigrationsAssembly("PetShelter.DataAccessLayer");
             providerOptions.EnableRetryOnFailure();
         }));
-builder.Services.AddScoped<IPetService, PetService>();
-builder.Services.AddScoped<IPetRepository, PetRepository>();
-builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<IIdNumberValidator, IdNumberValidator>();
+builder.Services.AddScoped<IPetService, PetService>();
+builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IDonationRepository, DonationRepository>();
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IPetRepository, PetRepository>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<RescuePetRequestValidator>();
 builder.Services.AddFluentValidationAutoValidation(fv =>
 {
     fv.DisableDataAnnotationsValidation = true;
@@ -33,10 +38,14 @@ builder.Services.AddFluentValidationAutoValidation(fv =>
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.Converters.Add(new StringEnumConverter());
-}); 
+}); ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen((options =>
+{
+    options.CustomSchemaIds(type => type.ToString());
+}
+));
 
 var app = builder.Build();
 
