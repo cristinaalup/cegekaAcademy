@@ -1,4 +1,6 @@
-﻿namespace PetShelterDemo.Domain;
+﻿using PetShelterDemo.DAL;
+
+namespace PetShelterDemo.Domain;
 
 public class PetShelter
 {
@@ -7,11 +9,11 @@ public class PetShelter
     private readonly IRegistry<Fundraiser> fundraiserRegistry;
     private int donationsInRon = 0;
 
-    public PetShelter(IRegistry<Pet> petRegistry, IRegistry<Person> donorRegistry, IRegistry<Fundraiser> fundraiserRegistry)
+    public PetShelter()
     {
-        petRegistry = petRegistry ?? throw new ArgumentNullException(nameof(petRegistry));
-        donorRegistry = donorRegistry ?? throw new ArgumentNullException(nameof(donorRegistry));
-        fundraiserRegistry = fundraiserRegistry ?? throw new ArgumentNullException(nameof(fundraiserRegistry));
+        donorRegistry = new Registry<Person>(new Database());
+        petRegistry = new Registry<Pet>(new Database());
+        fundraiserRegistry = new Registry<Fundraiser>(new Database());
     }
 
     public void RegisterPet(Pet pet)
